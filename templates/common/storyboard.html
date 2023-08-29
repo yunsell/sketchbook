@@ -1,0 +1,11 @@
+{% extends "common/index.html" %}
+{% load static %}
+{% block storyboard %}
+<div id="book">
+    <img src="{{ image }}" />
+    <div>{{ story }}</div>
+</div>
+<script>
+    $('#book').turn({ gradients: true, acceleration: true });
+</script>
+{% endblock %}

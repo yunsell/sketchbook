@@ -205,10 +205,11 @@ a:focus {
 }
 
 .hero_detail-box h1 {
+  margin-top: 20px;
   font-size: 50px;
   color: #fefeff;
   font-weight: 600;
-  width: 70%;
+  width: 80%;
 }
 
 
@@ -556,5 +557,22 @@ a:focus {
 }
 
 
+#book {
+  margin: 5% auto;
+  width: 100%;
+  height: 700px;
+}
+
+#book .turn-page {
+  -webkit-background-size: 100% 100%;
+  background-size: 100% 100%;
+  background-color: yellow;
+}
+
+#book div {
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: center center;
+}
 
 /* end footer section*/
