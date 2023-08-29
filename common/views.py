@@ -34,7 +34,12 @@ def index(request):
 def generate_story(request):
     openai.api_key = "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"
 
-    prompt = '아래 주제를 바탕으로 어린이들이 좋아할 만한 동화 이야기를 애기들도 이해 할 수 있고, 최대한 읽기 쉽게 만들어줘.'
+    prompt = """아래 주제를 바탕으로 아이가 좋아하는 동화를 만들어줘. 내용은 너무 길지 않게, 기승전결에 따라 4개의 문단으로 나눠줘(엔터 2번으로), 최대한 읽기 쉽게 만들어줘.
+1장:
+2장:
+3장:
+4장:
+"""
     messages = [
         {"role": "system", "content": prompt},
     ]
@@ -42,10 +47,11 @@ def generate_story(request):
     messages.append(
         {"role": "user",
         "content": """
-            주인공: 윤세일
+            제목: 해적 팅커벨
+            주인공: 윤도윤
             주인공의 성별: 남자
-            주인공의 나이: 10
-            동화 주제: 마법에 걸린 숲 연대기 이야기 속 마법에 걸린 숲이 살아나는 이야기를 써보세요.
+            주인공의 나이: 5
+            동화 주제: 해적 팅커벨과 모험을 떠나는 이야기
         """})
 
     completion = openai.ChatCompletion.create(
@@ -55,8 +61,13 @@ def generate_story(request):
 
     chat_response = completion.choices[0].message.content
 
+    # 응답을 문단별로 나누기 테스트 필요
+    split_response = chat_response.split('\n\n')
+    split_response = [x.replace('\n', '') for x in split_response]
+    print(split_response)
+
     messages = [
-        {"role": "user", "content": chat_response + ' 이 글에 해당되는 핵심이 되는 키워드를 영어로 추출해줘.'},
+        {"role": "user", "content": prompt + ' 이 글에 해당되는 핵심이 되는 키워드를 영어로 추출해줘. (단, 이름은 제외)'},
     ]
 
     completion = openai.ChatCompletion.create(
@@ -64,13 +75,15 @@ def generate_story(request):
     messages=messages
     )
 
+    # 프롬프트에 사용할 스타일
+    prompt_style = "children's animate style, fairy tales style, no text, "
     keys_of_story = completion.choices[0].message.content
 
     # 프롬프트에 사용할 제시어
     negative_prompt = ""
 
     # 이미지 생성하기 REST API 호출
-    response = t2i(keys_of_story, negative_prompt)
+    response = t2i(prompt_style + keys_of_story, negative_prompt)
     
     image = response.get("images")[0].get("image")
 
