@@ -4,8 +4,6 @@ import json
 from django.shortcuts import render
 
 
-
-
 # 이미지 생성하기 요청
 def t2i(prompt, negative_prompt):
     REST_API_KEY = 'b714f19047d1ba1f100ead851b9a00ac'
@@ -55,14 +53,20 @@ def generate_story(request):
     #         동화 주제: 해적 팅커벨과 모험을 떠나는 이야기
     #     """})
 
+    title = "용감한 토마토"
+    character_name = " " + "윤도윤"
+    character_sex = " " + "남자"
+    character_age = " " + "5살"
+    story_theme = " " + "작은 토마토가 자신의 작은 크기와 모습을 극복하며, 용감하게 여러 어려움을 극복하고 친구들을 돕는 이야기"
+
     messages.append(
         {"role": "user",
-         "content": """
-            제목: 용감한 토마토
-            주인공: 윤도윤
-            주인공의 성별: 남자
-            주인공의 나이: 5
-            동화 주제: 작은 토마토가 자신의 작은 크기와 모습을 극복하며, 용감하게 여러 어려움을 극복하고 친구들을 돕는 이야기
+         "content": f"""
+            제목: {title}
+            주인공: {character_name}
+            주인공의 성별: {character_sex}
+            주인공의 나이: {character_age}
+            동화 주제: {story_theme}
          """})
 
     completion = openai.ChatCompletion.create(
@@ -75,12 +79,13 @@ def generate_story(request):
     # 응답을 문단별로 나누기 테스트 필요
     split_response = chat_response.split('\n\n')
     split_response = [x.replace('\n', '') for x in split_response]
+    print("split_result ==> ", split_response)
     print("split_result1 ==> ", split_response[0])
     print("split_result2 ==> ", split_response[1])
     print("split_result3 ==> ", split_response[2])
 
     messages = [
-        {"role": "user", "content": split_response[1] + ' 이 글에 해당되는 핵심이 되는 키워드를 영어로 추출해줘. (단, 이름은 제외)'},
+        {"role": "user", "content": title + character_sex + character_age + story_theme + ', ' + split_response[1] + ' 이 글에 해당되는 핵심이 되는 키워드를 영어로 추출해줘. (단, 이름은 제외)'},
     ]
 
     completion = openai.ChatCompletion.create(
