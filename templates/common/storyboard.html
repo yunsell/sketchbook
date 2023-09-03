@@ -2,8 +2,11 @@
 {% load static %}
 {% block storyboard %}
 <div id="book">
-    <img src="{{ image }}" />
-    <div>{{ story }}</div>
+    <div>{{ story.title }}</div>
+    {% for post in posts %}
+        <img src="{{ post.image_file.url }}" />
+        <div>{{ post.message }}</div>
+    {% endfor %}
 </div>
 <script>
     $('#book').turn({ gradients: true, acceleration: true });

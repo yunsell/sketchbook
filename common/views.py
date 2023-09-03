@@ -1,8 +1,9 @@
+import re
 import openai
 import requests
 import json
 from django.shortcuts import render
-
+from .models import Story, POST
 
 # 이미지 생성하기 요청
 def t2i(prompt, negative_prompt):
@@ -42,7 +43,9 @@ def generate_story(request):
     messages = [
         {"role": "system", "content": prompt},
     ]
+    
 
+    print(request.POST.get('title'))
     # messages.append(
     #     {"role": "user",
     #     "content": """
@@ -77,35 +80,47 @@ def generate_story(request):
     chat_response = completion.choices[0].message.content
 
     # 응답을 문단별로 나누기 테스트 필요
-    split_response = chat_response.split('\n\n')
-    split_response = [x.replace('\n', '') for x in split_response]
+
+    split_response = re.sub(r'([0-9]+장:)', '', chat_response )
     print("split_result ==> ", split_response)
-    print("split_result1 ==> ", split_response[0])
-    print("split_result2 ==> ", split_response[1])
-    print("split_result3 ==> ", split_response[2])
+    split_response = split_response.split('\n\n')
+    split_response_list = [x.replace('\n', '') for x in split_response]
+    print("split_result1 ==> ", split_response_list[0])
+    print("split_result2 ==> ", split_response_list[1])
+    print("split_result3 ==> ", split_response_list[2])
 
-    messages = [
-        {"role": "user", "content": title + character_sex + character_age + story_theme + ', ' + split_response[1] + ' 이 글에 해당되는 핵심이 되는 키워드를 영어로 추출해줘. (단, 이름은 제외)'},
-    ]
+    story = Story.objects.create(title=title)
 
-    completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
-    messages=messages
-    )
+    for split_res in split_response_list:
+        
+        messages = [
+            {"role": "user", "content": title + character_sex + character_age + story_theme + ', ' + split_res + ' 이 글에 해당되는 핵심이 되는 키워드를 영어로 추출해줘. (단, 이름은 제외)'},
+        ]
 
-    # 프롬프트에 사용할 스타일
-    prompt_style = "children's animate style, fairy tales style, no text, "
-    keys_of_story = completion.choices[0].message.content
-    print("image_prompt ==> ", keys_of_story)
+        completion = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=messages
+        )
 
-    # 프롬프트에 사용할 제시어
-    negative_prompt = ""
+        # 프롬프트에 사용할 스타일
+        prompt_style = "children's animate style, fairy tales style, no text, "
+        keys_of_story = completion.choices[0].message.content
+        print("image_prompt ==> ", keys_of_story)
 
-    # 이미지 생성하기 REST API 호출
-    response = t2i(prompt_style + keys_of_story, negative_prompt)
+        # 프롬프트에 사용할 제시어
+        negative_prompt = ""
+
+        # 이미지 생성하기 REST API 호출
+        response = t2i(prompt_style + keys_of_story, negative_prompt)
+        
+        image = response.get("images")[0].get("image")
+        post = POST.objects.create(story=story, message=split_res, image_url=image)
+        post.get_remote_image()
     
-    image = response.get("images")[0].get("image")
 
-    context = {"image": image, "story": chat_response}
+    posts = POST.objects.filter(story=story).order_by('created_at')
+
+    print(posts[0])
+    context = {"image": image, "story": story, "posts": posts}
 
     return render(request, 'common/storyboard.html', context)

@@ -67,17 +67,20 @@
             <form action="generate_story" method="post">
               {% csrf_token %}
               <div>
+                <label for="title">제목 :</label>
+                <input id="title" name="title" type="text" />
+              </div>
+              <div>
                 <label for="charactor">이름 :</label>
-                <input id="charactor" type="text" />
+                <input id="charactor" name="charactor" type="text" />
               </div>
               <div>
                 <label for="gender">성벌 :</label>
-                <input id="gender" type="text" />
+                <input id="gender" name="gender" type="text" />
               </div>
               <div>
                 <label for="age">나이 :</label>
-
-                <input id="age" type="number" />
+                <input id="age" name="age" type="number" />
               </div>
               <div class="">
                 <button type="submit" class="call_to-btn btn_white-border">
