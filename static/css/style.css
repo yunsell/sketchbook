@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Fairytale_ddobak';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/naverfont_03@1.0/Fairytale_ddobak.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
   font-family: 'Raleway', sans-serif;
   background-color: #fefeff;
@@ -559,7 +566,7 @@ a:focus {
 
 #book {
   margin: 5% auto;
-  width: 100%;
+  width: 80%;
   height: 700px;
 }
 

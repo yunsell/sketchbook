@@ -32,7 +32,8 @@ def index(request):
 
 def generate_story(request):
     print("#### generate_story 시작 ####")
-    openai.api_key = "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"
+    # openai.api_key = "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"
+    openai.api_key = "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"
 
     prompt = """아래 주제를 바탕으로 아이가 좋아하는 동화를 만들어줘. 내용은 너무 길지 않게, 기승전결에 따라 4개의 문단으로 나눠줘(엔터 2번으로), 최대한 읽기 쉽게 만들어줘.
 1장:
@@ -56,11 +57,13 @@ def generate_story(request):
     #         동화 주제: 해적 팅커벨과 모험을 떠나는 이야기
     #     """})
 
-    title = "용감한 토마토"
-    character_name = " " + "윤도윤"
-    character_sex = " " + "남자"
-    character_age = " " + "5살"
-    story_theme = " " + "작은 토마토가 자신의 작은 크기와 모습을 극복하며, 용감하게 여러 어려움을 극복하고 친구들을 돕는 이야기"
+    title = request.POST.get('title')
+    character_name = " " + request.POST.get('character')
+    character_sex = " " + request.POST.get('gender')
+    character_age = " " + request.POST.get('age')
+    story_theme = " " + request.POST.get('contents')
+
+    print(title, character_name, character_sex, character_age, story_theme)
 
     messages.append(
         {"role": "user",
@@ -73,7 +76,7 @@ def generate_story(request):
          """})
 
     completion = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
+    model="gpt-4",
     messages=messages
     )
 
@@ -98,7 +101,7 @@ def generate_story(request):
         ]
 
         completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=messages
         )
 
