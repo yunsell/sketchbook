@@ -6,16 +6,13 @@
   <header class="header_section">
     <div class="container">
       <nav class="navbar navbar-expand-lg custom_nav-container ">
-        <a class="navbar-brand" href="index.html">
-          <span>
-            스케치북
-          </span>
+        <a class="navbar-brand">
+            <p class="h1" style="color:whitesmoke; font-weight: 700;">스케치북</p>
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-
       </nav>
     </div>
   </header>
@@ -23,16 +20,9 @@
     <div class="hero-container container">
       <div class="hero_detail-box">
         <h1>
-          상상할 수 있는
-          이야기를 만들어주는
-          재미있는 AI 동화책
+          아이들을 위한 새로운 동화세계! </h1>
+          <h1>언제나 이야기를 만들고 선물하세요.
         </h1>
-
-        <div class="hero_btn-continer">
-          <a href="" class="call_to-btn btn_white-border">
-            Read More
-          </a>
-        </div>
       </div>
       <div class="hero_img-container">
         <div>
@@ -42,10 +32,7 @@
     </div>
   </section>
 </div>
-<!-- end header section -->
-
 <div class="common_style">
-
   <!-- about section -->
   <section class="about_section">
     {% block storyboard %}
@@ -61,39 +48,53 @@
       <div class="row">
         <div class="col-md-6">
           <div class="admission_detail-box">
-            <h3>
-              동화 만들기
-            </h3>
+            <p class="h1">동화 만들기</p>
             <form action="generate_story" method="post">
               {% csrf_token %}
-              <div>
-                <label for="title">제목 :</label>
-                <input id="title" name="title" type="text" />
+              <div class="mb-3 row">
+                <label for="title" class="col-sm-2 col-form-label">제목 :</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="title" name="title">
+                </div>
               </div>
-              <div>
-                <label for="character">이름 :</label>
-                <input id="character" name="character" type="text" />
+              <div class="mb-3 row">
+                <label for="character" class="col-sm-2 col-form-label">이름 :</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="character" name="character">
+                </div>
               </div>
-              <div>
-                <label for="gender">성벌 :</label>
-                <input id="gender" name="gender" type="text" />
+              <div class="mb-3 row">
+                <label for="gender" class="col-sm-2 col-form-label">성벌 :</label>
+                <div class="col-sm-10">
+                  <select class="form-select" id="gender" name="gender">
+                    <option selected value="남자">남자</option>
+                    <option value="여자">여자</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <label for="age">나이 :</label>
-                <input id="age" name="age" type="number" />
+              <div class="mb-3 row">
+                <label for="age" class="col-sm-2 col-form-label">나이 :</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="age" name="age">
+                </div>
               </div>
-              <div>
-                <label for="contents">줄거리 :</label>
-                <input id="contents" name="contents" type="text" />
+              <div class="mb-3 row">
+                <label for="contents" class="col-sm-2 col-form-label">줄거리 :</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" id="contents" name="contents" rows="3"></textarea>
+                </div>
               </div>
               <div class="">
-                <button type="submit" class="call_to-btn btn_white-border">
-                  생성하기
-                </button>
+                <button type="submit" class="btn btn-primary" style="float:right" onclick="test()" >생성하기</button>
               </div>
             </form>
           </div>
         </div>
+        <script>
+          function test(){
+            $(".modal__background").css("display", "block");
+          }
+        </script>
         <div class="col-md-6">
           <div class="admission_img-container">
             <img src="{% static 'images/admission.png' %}" alt="">
@@ -106,7 +107,7 @@
   <section class="info_section layout_padding-top">
     <div class="info_logo-box">
       <h2>
-        Fanadesh
+        스케치북
       </h2>
     </div>
     <div class="container layout_padding2">
@@ -188,14 +189,12 @@
       </div>
     </div>
   </section>
-
-  <!-- footer section -->
-  <section class="container-fluid footer_section">
-    <p>
-      Copyright &copy; 2019 All Rights Reserved By
-      <a href="https://html.design/">Free Html Templates</a>
-    </p>
-  </section>
-
+  <div class="modal__background" style="display: none;">
+    <div class="modal__box">
+      <div class="typing-demo">
+        AI가 당신의 이야기를 생성중입니다...
+      </div>
+    </div>
+  </div>
   <!-- footer section -->
   {% endblock %}

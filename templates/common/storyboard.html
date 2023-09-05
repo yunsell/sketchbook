@@ -2,10 +2,10 @@
 {% load static %}
 {% block storyboard %}
 <div id="book" style="font-family: 'Fairytale_ddobak';">
-    <div style="background: url({% static 'img/corver2.png' %})">{{ story.title }}</div>
+    <div style="background: url({% static 'img/cover2.png' %})"><div class="title">{{ story.title }}</div></div>
     {% for post in posts %}
-        <img style="padding: 10px 0px 10px 10px; background: url({% static 'img/page2.jpg' %})" src="{{ post.image_file.url }}" />
-        <div style="font-size: 40px; padding: 20px 50px 20px 50px; background: url({% static 'img/page.jpg' %})">{{ post.message }}</div>
+        <img style="background: url({% static 'img/page.jpg' %})" src="{{ post.image_file.url }}" />
+        <div style="font-size: 40px; background: url({% static 'img/page.jpg' %})"><div class="contents" style="background: url({% static 'img/page.jpg' %})">{{ post.message }}</div></div>
     {% endfor %}
 </div>
 <script>
