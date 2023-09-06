@@ -36,10 +36,11 @@
 3) 육아하는 부모들에게 비용 절감 효과
 ```
 
-## Live Demo
+## 시연영상
 
 ---
-Click demo
+https://www.youtube.com/watch?v=bGBWkdfqsXU
+
 
 ## DevTools
 
@@ -49,7 +50,7 @@ Click demo
    - FrontEnd : Javascript & jQuery
    - DataBase : PostgreSQL
 2) 생성모델
-   - 언어생성 : openAI / gpt-3.5-turbo 사용
+   - 언어생성 : openAI / gpt-4 사용
    - 그림생성 : kakaobrain / karlo_2.0 사용
 
 ## Architecture
