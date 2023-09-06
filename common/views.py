@@ -7,7 +7,8 @@ from .models import Story, POST
 
 # 이미지 생성하기 요청
 def t2i(prompt, negative_prompt):
-    REST_API_KEY = 'b714f19047d1ba1f100ead851b9a00ac'
+    # Kakao Karlo API Key 입력
+    REST_API_KEY = 'REST_API_KEY'
 
     r = requests.post(
         'https://api.kakaobrain.com/v2/inference/karlo/t2i',
@@ -32,8 +33,9 @@ def index(request):
 
 def generate_story(request):
     print("#### generate_story 시작 ####")
-    # openai.api_key = "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"
-    openai.api_key = "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"
+
+    # OpenAI API Key 입력
+    openai.api_key = "openai_api_key"
 
     prompt = """아래 주제를 바탕으로 아이가 좋아하는 동화를 만들어줘. 내용은 너무 길지 않게, 기승전결에 따라 4개의 문단으로 나눠줘(엔터 2번으로), 최대한 읽기 쉽게 만들어줘.
 1장:
@@ -44,18 +46,6 @@ def generate_story(request):
     messages = [
         {"role": "system", "content": prompt},
     ]
-    
-
-    print(request.POST.get('title'))
-    # messages.append(
-    #     {"role": "user",
-    #     "content": """
-    #         제목: 해적 팅커벨
-    #         주인공: 윤도윤
-    #         주인공의 성별: 남자
-    #         주인공의 나이: 5
-    #         동화 주제: 해적 팅커벨과 모험을 떠나는 이야기
-    #     """})
 
     title = request.POST.get('title')
     character_name = " " + request.POST.get('character')
